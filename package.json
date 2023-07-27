@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/huangjs888/load-image.git"
+    "url": "git+https://github.com/huangjs888/loadImage.git"
   },
   "keywords": [
     "huangjs",
@@ -37,9 +37,9 @@
   "author": "Huangjs",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/huangjs888/load-image/issues"
+    "url": "https://github.com/huangjs888/loadImage/issues"
   },
-  "homepage": "https://github.com/huangjs888/load-image#readme",
+  "homepage": "https://github.com/huangjs888/loadImage#readme",
   "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.20.7",
