@@ -2,11 +2,13 @@
   "name": "@huangjs888/load-image",
   "version": "1.0.2",
   "description": "load image with progress",
-  "main": "lib/index.js",
+  "main": "src/index",
+  "source": "src/index",
   "unpkg": "dist/loadImage.min.js",
   "files": [
     "dist",
     "lib",
+    "src",
     "README.md"
   ],
   "exports": {
