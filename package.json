@@ -1,0 +1,65 @@
+{
+  "name": "@huangjs888/load-image",
+  "version": "1.0.0",
+  "description": "load image with progress",
+  "main": "lib/index.js",
+  "unpkg": "dist/loadImage.min.js",
+  "files": [
+    "dist",
+    "lib",
+    "README.md"
+  ],
+  "exports": {
+    "umd": "./dist/loadImage.min.js",
+    "default": "./lib/index.js"
+  },
+  "scripts": {
+    "start": "npm run lint && npm run lib && npm run dist",
+    "clean:lib": "rimraf lib",
+    "clean:dist": "rimraf dist",
+    "lint": "eslint . --ext .js,.ts",
+    "lib": "npm run clean:lib && babel --extensions .ts ./src -d ./lib",
+    "dist": "npm run clean:dist && webpack --config webpack.config.js --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huangjs888/load-image.git"
+  },
+  "keywords": [
+    "huangjs",
+    "huangjs888",
+    "loadImage",
+    "load-image",
+    "image-load",
+    "imageLoad",
+    "image"
+  ],
+  "author": "Huangjs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huangjs888/load-image/issues"
+  },
+  "homepage": "https://github.com/huangjs888/load-image#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/runtime-corejs3": "^7.20.13",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "babel-loader": "^8.3.0",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.4",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
