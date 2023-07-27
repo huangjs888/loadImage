@@ -1,6 +1,6 @@
 {
   "name": "@huangjs888/load-image",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "load image with progress",
   "main": "lib/index.js",
   "unpkg": "dist/loadImage.min.js",
