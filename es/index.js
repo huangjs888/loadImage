@@ -1,15 +1,4 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
-exports.__esModule = true;
-exports.default = _default;
-exports.hijackImage = hijackImage;
-exports.loadImageBase = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/extends"));
-var _promise = _interopRequireDefault(require("@babel/runtime-corejs3/core-js/promise"));
-var _url2 = _interopRequireDefault(require("@babel/runtime-corejs3/core-js/url"));
-var _getOwnPropertyDescriptor = _interopRequireDefault(require("@babel/runtime-corejs3/core-js/object/get-own-property-descriptor"));
-var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js/instance/concat"));
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 /*
  * @Author: Huangjs
  * @Date: 2023-02-13 15:22:58
@@ -25,15 +14,15 @@ var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js/ins
 // 4，HTTP缓存时存在disk或memory里的，靠浏览器默认去读取，ajax还会发一次304请求，如果不想这样浪费请求时间，并且确定图片不会变化，其实可以自己做缓存，可以将请求的数据（也可以转base64）存入到IndexDB，下次请求之前先从中取，没有再请求
 /* const lastModified: { [key in string]: string } = {};
 const etag: { [key in string]: string } = {}; */
-var proxy = function proxy(url, progress) {
-  return new _promise.default(function (resolve, reject) {
-    var xhr = new XMLHttpRequest();
-    xhr.onprogress = function (e) {
+const proxy = function proxy(url, progress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onprogress = e => {
       if (e.lengthComputable) {
         typeof progress === 'function' && progress(e);
       }
     };
-    xhr.onloadend = function (e) {
+    xhr.onloadend = e => {
       if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
         /* let modified = xhr.getResponseHeader('Last-Modified');
         if (modified) {
@@ -45,7 +34,7 @@ var proxy = function proxy(url, progress) {
         } */
         // URL.createObjectURL对应资源此时是存在内存里，浏览器关闭或主动revoke会释放掉
         // resolve里面使用完url之后记得及时释放掉，释放内存后，地址就无效了
-        resolve(_url2.default.createObjectURL(xhr.response));
+        resolve(URL.createObjectURL(xhr.response));
       } else {
         reject(e);
       }
@@ -66,50 +55,44 @@ var proxy = function proxy(url, progress) {
 };
 
 // 对image.src进行劫持，一劳永逸
-var isHijack = false;
-function hijackImage() {
+let isHijack = false;
+export function hijackImage() {
   if (isHijack) {
     return;
   }
   // 这里对HTMLImageElement元素的src进行重写，再设置src的时候使用ajax获取图片资源，目的是监听image的onprogress事件生效
-  var _HTMLImageElement = HTMLImageElement,
-    prototype = _HTMLImageElement.prototype;
-  var descriptor = (0, _getOwnPropertyDescriptor.default)(prototype, 'src');
+  const {
+    prototype
+  } = HTMLImageElement;
+  const descriptor = Object.getOwnPropertyDescriptor(prototype, 'src');
   if (descriptor) {
     isHijack = true;
-    Object.defineProperty(prototype, 'src', (0, _extends2.default)({}, descriptor, {
-      set: function set(value) {
-        var _this = this;
-        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-          args[_key - 1] = arguments[_key];
-        }
+    Object.defineProperty(prototype, 'src', _extends({}, descriptor, {
+      set: function set(value, ...args) {
         if (descriptor.set) {
-          var setter = descriptor.set;
+          const setter = descriptor.set;
           if (value && value.indexOf('blob:') !== 0) {
-            proxy(value, this.onprogress).then(function (url) {
-              var _context;
-              var onload = _this.onload;
-              _this.onload = function (e) {
+            proxy(value, this.onprogress).then(url => {
+              const onload = this.onload;
+              this.onload = function (e) {
                 // 释放内存
-                _url2.default.revokeObjectURL(url);
+                URL.revokeObjectURL(url);
                 onload && onload.apply(this, [e]);
               };
               // 图片资源加载完成后会缓存，缓存数据丢给image原始src操作（这里就会多个数据转存的时间）
-              setter.apply(_this, (0, _concat.default)(_context = [url]).call(_context, args));
-            }).catch(function () {
-              var _context2;
+              setter.apply(this, [url, ...args]);
+            }).catch(() => {
               // 出现跨域等无法加载图片情况，会重新丢给image原始src操作
-              setter.apply(_this, (0, _concat.default)(_context2 = [value]).call(_context2, args));
+              setter.apply(this, [value, ...args]);
             });
           } else {
-            var _context3;
             // blob图片直接丢给image原始src操作
-            setter.apply(this, (0, _concat.default)(_context3 = [value]).call(_context3, args));
+            setter.apply(this, [value, ...args]);
           }
         }
       }
     }));
-    return function () {
+    return () => {
       isHijack = false;
       // 删除劫持
       Object.defineProperty(prototype, 'src', descriptor);
@@ -119,51 +102,41 @@ function hijackImage() {
 }
 
 // 原始图片加载
-var loadImageBase = function loadImageBase(url, progress) {
-  return new _promise.default(function (resolve, reject) {
-    var image = new Image();
-    var off = function off() {
+export const loadImageBase = function loadImageBase(url, progress) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    const off = () => {
       image.onload = null;
       image.onprogress = null;
       image.onerror = null;
     };
-    image.onload = function () {
+    image.onload = () => {
       resolve(image);
       off();
     };
-    image.onerror = function (e) {
+    image.onerror = e => {
       reject(e);
       off();
     };
     if (typeof progress === 'function') {
-      image.onprogress = function (e) {
-        return progress(e.loaded / e.total);
-      };
+      image.onprogress = e => progress(e.loaded / e.total);
     }
     image.src = url;
   });
 };
-exports.loadImageBase = loadImageBase;
-function _default(url, progress) {
+export default function (url, progress) {
   // 加载图片需要进度条的使用proxy代理加载
   if (typeof progress === 'function') {
-    return proxy(url, function (e) {
-      return progress(e.loaded / e.total);
-    }).then(function (_url) {
-      return (
-        // 该loadImageBase成功后会把then里return的image抛给外面调用者的then
-        // 该loadImageBase失败后会先走下面catch的loadImageBase，而不是直接抛到外面调用者的catch
-        loadImageBase(_url).then(function (image) {
-          _url2.default.revokeObjectURL(_url);
-          return image;
-        })
-      );
-    })
+    return proxy(url, e => progress(e.loaded / e.total)).then(_url =>
+    // 该loadImageBase成功后会把then里return的image抛给外面调用者的then
+    // 该loadImageBase失败后会先走下面catch的loadImageBase，而不是直接抛到外面调用者的catch
+    loadImageBase(_url).then(image => {
+      URL.revokeObjectURL(_url);
+      return image;
+    }))
     // 该loadImageBase成功后会抛给外面调用者的then
     // 该loadImageBase失败后会抛到外面调用者的catch
-    .catch(function () {
-      return loadImageBase(url);
-    });
+    .catch(() => loadImageBase(url));
   } else {
     return loadImageBase(url);
   }

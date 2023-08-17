@@ -2,7 +2,7 @@
  * @Author: Huangjs
  * @Date: 2023-02-13 15:22:58
  * @LastEditors: Huangjs
- * @LastEditTime: 2023-07-27 09:48:47
+ * @LastEditTime: 2023-08-17 11:38:49
  * @Description: ******
  */
 
@@ -13,10 +13,7 @@
 // 4，HTTP缓存时存在disk或memory里的，靠浏览器默认去读取，ajax还会发一次304请求，如果不想这样浪费请求时间，并且确定图片不会变化，其实可以自己做缓存，可以将请求的数据（也可以转base64）存入到IndexDB，下次请求之前先从中取，没有再请求
 /* const lastModified: { [key in string]: string } = {};
 const etag: { [key in string]: string } = {}; */
-const proxy = function proxy(
-  url: string,
-  progress?: (e: ProgressEvent) => void,
-) {
+const proxy = function proxy(url: string, progress?: (e: ProgressEvent) => void) {
   return new Promise<string>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onprogress = (e) => {
@@ -105,10 +102,7 @@ export function hijackImage() {
 }
 
 // 原始图片加载
-export const loadImageBase = function loadImageBase(
-  url: string,
-  progress?: (v: number) => void,
-) {
+export const loadImageBase = function loadImageBase(url: string, progress?: (v: number) => void) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
     const off = () => {

@@ -1,31 +1,33 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
-    "moduleResolution": "node",
-    "noEmit": false,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "target": "ESNext",
-    "module": "commonjs",
-    "isolatedModules": true,
     "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./es",
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "rootDirs": [
+      "./src",
+      "./types"
+    ],
+    "rootDir": "./src",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
   },
+  "include": [
+    "src/**/*",
+    "types"
+  ],
   "exclude": [
-    "lib",
-    "dist",
-    "docs",
     "node_modules",
-    "example/webpack.config.js",
-    "webpack.config.js",
-    "_babel.config_.js",
-    ".eslintrc.js",
-    ".prettierrc.js"
+    "dist"
   ]
 }

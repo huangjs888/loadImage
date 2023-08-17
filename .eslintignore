@@ -67,6 +67,8 @@ coverage
 docs
 lib
 esm
+es
+ejs
 build
 dist
 temp

@@ -2,31 +2,38 @@
   "name": "@huangjs888/load-image",
   "version": "1.0.3",
   "description": "load image with progress",
-  "main": "src/index",
-  "source": "src/index",
-  "unpkg": "dist/loadImage.min.js",
-  "files": [
-    "dist",
-    "lib",
-    "src",
-    "README.md"
-  ],
+  "main": "lib/index.js",
+  "types": "es/index.d.ts",
+  "module": "es/index.js",
+  "unpkg": "dist/loadImage.js",
   "exports": {
     "umd": "./dist/loadImage.min.js",
+    "types": "./es/index.d.ts",
+    "import": "./es/index.js",
     "default": "./lib/index.js"
   },
   "scripts": {
-    "start": "npm run lint && npm run lib && npm run dist",
-    "clean:lib": "rimraf lib",
-    "clean:dist": "rimraf dist",
-    "lint": "eslint . --ext .js,.ts",
-    "lib": "npm run clean:lib && babel --extensions .ts ./src -d ./lib",
-    "dist": "npm run clean:dist && webpack --config webpack.config.js --mode production"
+    "start": "npm run build",
+    "build": "npm run clean && npm run lint && npm run build:types && npm run build:esm && npm run build:cjs && npm run build:umd",
+    "build:merge": "npm run clean && npm run lint && npm run build:types:merge && npm run build:esm:merge && npm run build:cjs:merge && npm run build:umd",
+    "build:cjs": "cross-env MOD_ENV=cjs BABEL_ENV=babel babel --extensions .ts src -d lib",
+    "build:esm": "cross-env MOD_ENV=esm BABEL_ENV=babel babel --extensions .ts src -d es",
+    "build:types": "tsc --declaration",
+    "build:cjs:merge": "cross-env NODE_ENV=development MOD_ENV=cjs rollup -c --bundleConfigAsCjs",
+    "build:esm:merge": "cross-env NODE_ENV=development MOD_ENV=esm rollup -c --bundleConfigAsCjs",
+    "build:types:merge": "tsc --outFile es/loadImage.d.ts --declaration",
+    "build:umd": "npm run build:umd:dev && npm run build:umd:prod",
+    "build:umd:dev": "cross-env NODE_ENV=development MOD_ENV=umd rollup -c --bundleConfigAsCjs",
+    "build:umd:prod": "cross-env NODE_ENV=production MOD_ENV=umd rollup -c --bundleConfigAsCjs",
+    "clean": "rimraf lib && rimraf dist && rimraf es",
+    "lint": "eslint . --ext .js,.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/huangjs888/loadImage.git"
-  },
+  "files": [
+    "es",
+    "dist",
+    "lib",
+    "README.md"
+  ],
   "keywords": [
     "huangjs",
     "huangjs888",
@@ -36,32 +43,43 @@
     "imageLoad",
     "image"
   ],
-  "author": "Huangjs",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huangjs888/loadImage.git"
+  },
   "bugs": {
     "url": "https://github.com/huangjs888/loadImage/issues"
   },
   "homepage": "https://github.com/huangjs888/loadImage#readme",
-  "dependencies": {},
+  "author": {
+    "name": "Huangjs",
+    "email": "1170384651@qq.com"
+  },
+  "license": "MIT",
+  "peerDependencies": {},
+  "peerDependenciesMeta": {},
   "devDependencies": {
-    "@babel/cli": "^7.20.7",
-    "@babel/core": "^7.20.12",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/plugin-transform-runtime": "^7.19.6",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.18.6",
-    "@babel/runtime-corejs3": "^7.20.13",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
-    "babel-loader": "^8.3.0",
-    "eslint": "^8.34.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.4",
-    "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^4.10.0"
+    "@babel/cli": "^7.22.10",
+    "@babel/core": "^7.22.10",
+    "@babel/plugin-transform-runtime": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "@babel/preset-typescript": "^7.22.5",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.1",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.28.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@babel/runtime-corejs3": "^7.22.10"
   }
 }
