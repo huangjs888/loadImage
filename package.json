@@ -1,6 +1,6 @@
 {
   "name": "@huangjs888/load-image",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "load image with progress",
   "main": "lib/index.js",
   "types": "es/index.d.ts",
