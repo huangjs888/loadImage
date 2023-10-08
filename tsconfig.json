@@ -5,29 +5,33 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "allowJs": true,
+    "jsx": "react",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "./es",
+    "outDir": "./types",
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "rootDirs": [
-      "./src",
-      "./types"
+      "./src"
     ],
     "rootDir": "./src",
     "typeRoots": [
-      "./node_modules/@types",
-      "./types"
+      "./node_modules/@types"
     ]
   },
   "include": [
     "src/**/*",
-    "types"
+    "global.d.ts"
   ],
   "exclude": [
     "node_modules",
+    "example",
+    "types",
+    "lib",
+    "es",
     "dist"
   ]
 }
