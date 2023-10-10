@@ -2,13 +2,25 @@
  * @Author: Huangjs
  * @Date: 2021-05-10 15:55:29
  * @LastEditors: Huangjs
- * @LastEditTime: 2023-07-27 10:29:07
+ * @LastEditTime: 2023-10-10 14:38:03
  * @Description: ******
 -->
+
 ## loadImage
+
 图片加载封装，带有进度的
+
+### 安装使用
+
+```sh
+
+npm install @huangjs888/load-image --save
+
+```
+
 ### 使用方法
-```javascript
+
+```js
 
 import loadImage from '@huangjs888/load-image';
 
