@@ -1,6 +1,6 @@
 {
   "name": "@huangjs888/load-image",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Load image with progress",
   "types": "./types/index.d.ts",
   "module": "./es/loadImage.min.js",
