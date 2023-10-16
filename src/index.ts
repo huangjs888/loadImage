@@ -2,7 +2,7 @@
  * @Author: Huangjs
  * @Date: 2023-02-13 15:22:58
  * @LastEditors: Huangjs
- * @LastEditTime: 2023-08-17 11:38:49
+ * @LastEditTime: 2023-10-16 14:50:21
  * @Description: ******
  */
 
@@ -125,7 +125,7 @@ export const loadImageBase = function loadImageBase(url: string, progress?: (v: 
   });
 };
 
-export default function (url: string, progress?: (v: number) => void) {
+export const loadImage = function loadImage(url: string, progress?: (v: number) => void) {
   // 加载图片需要进度条的使用proxy代理加载
   if (typeof progress === 'function') {
     return (
@@ -145,4 +145,4 @@ export default function (url: string, progress?: (v: number) => void) {
   } else {
     return loadImageBase(url);
   }
-}
+};

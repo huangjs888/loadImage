@@ -2,7 +2,7 @@
  * @Author: Huangjs
  * @Date: 2023-08-09 11:24:45
  * @LastEditors: Huangjs
- * @LastEditTime: 2023-08-21 14:29:54
+ * @LastEditTime: 2023-10-16 15:20:43
  * @Description: ******
  */
 
@@ -21,6 +21,7 @@ const config = {
   output: [
     {
       file: `${pathname}/loadImage${NODE_ENV === 'production' ? '.min' : ''}.js`,
+      exports: 'named',
       format: MOD_ENV,
       // umd时挂在全局变量下的模块名称
       name: MOD_ENV === 'umd' ? 'LoadImage' : undefined,
